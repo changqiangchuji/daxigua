@@ -1,5 +1,107 @@
 # 合成大西瓜
 
+
+## 说明
+
+在原项目的基础上新增了图片的批处理能力.
+由于大部分同学不会使用cocos(包括我), 在这种情况下替换项目的静态资源要求:
+
+- 每张图片裁剪成指定像素(如葡萄52*52, 桃子193\*193, 还有西瓜308\*309这种变态尺寸)
+- 裁剪成圆形(为了保证效果)
+- 转换为PNG格式
+- 命名成cocos打包好的hash值, 然后到指定目录下替换
+
+属实麻烦阿, 西八. 所以写了个[批处理脚本](scripts/batch.ts)来一次性批量的处理图片, 使用方法:
+
+> 非前端的同学请拉到下面配置好环境后再继续
+
+- 将你需要的图片放进指定目录下, 普通图片(即替换掉水果的)目录为`images/common`, 右上角闪图目录为`images/special`, `images/preserved`为保留资源, **请不要更改**, 同时确保普通图片数量为11张, 闪图数量为2张
+
+- 执行`npm start`, 你应当能看到这样的输出
+
+  ![image-20210202154037202](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154037202.png)
+
+  > 如果运行时出现了这样的错误:
+  >
+  > ![image-20210202154153535](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154153535.png)
+  >
+  > 请直接再试一次即可成功运行
+
+- 生成的目录结构大致如图所示:
+
+  ![image-20210202154232352](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154232352.png)
+
+- 在资源管理器中, 使用`output`下面的文件夹拖动到`res/raw-assets`, 若提示已存在, 选择替换即可.
+
+  > 这一步选择手动操作, 是为了避免影响此文件夹的文件后难以定位问题.
+
+- 在命令行运行`npm run serve`,  输出:
+
+  ![image-20210202154446242](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154446242.png)
+
+- 访问本地服务器地址即可
+
+  ![image-20210202154634432](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154634432.png)
+
+- 注意: 为了效果最佳, 如果你使用的是人像照片, 仍然需要你自己处理一下把头部部位裁剪的占满尺寸, 如果是其他校徽 梗图等无焦点的图片, 直接使用即可.
+
+- 部署: 推荐使用 [Vercel](https://vercel.com/) 或 [Surge](http://surge.sh/) 进行快速部署, 见下方部署部分或详细教程
+
+- 详细教程与更多配置魔改请参见下方 :arrow_down: :arrow_down: :arrow_down:
+
+  
+
+
+### 对于非前端同学
+
+  - 安装NodeJS, [下载地址](http://nodejs.cn/download/)
+
+  - 在命令行执行`node -v`和`npm -v`, 输出正常:
+
+    ![image-20210202155511560](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202155511560.png)
+
+    即说明环境配置完毕
+
+- 后续的操作请cd到clone下来的文件夹, 然后执行上面的命令
+
+### 部署
+
+#### Surge
+
+- 安装`surge`
+
+  ![image-20210202155942611](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202155942611.png)
+
+  ```bash
+  npm install surge  --registry https://registry.npm.taobao.org -g
+  ```
+
+- 在命令行执行surge
+
+  ![image-20210202160412627](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202160412627.png)
+
+  - 如果需要注册, 按提示注册就好
+
+  - 域名可以自定义为`xxx.surge.sh`, 只要未被占用即可
+
+
+
+#### Vercel
+
+- 安装`Vercel CLI`,  将上面安装`surge`的命令替换为`vercel`即可
+
+- 在命令行执行vc(同样需要注册, 见 [Vercel](https://vercel.com/))
+
+  ![image-20210202160909133](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202160909133.png)
+
+- 访问网址即可, 上图的网址: https://ww-gamma.vercel.app/
+
+- 关于自定义域名, 如果你有此需求, 说明你是行家, 请自己查阅文档
+
+
+
+## 详细教程
+
 **声明，本项目仅帮助大家学习技术及娱乐，切勿将修改后的网站大规模传播及商用，以避免侵权！**
 
 > 最简单的魔改发布『 合成大西瓜 』，配套改图工具，不用改代码，修改配置即可！
@@ -62,7 +164,7 @@
 > 感谢 [buchenglei](https://github.com/buchenglei) 的贡献
 
 1. 构建镜像
-    
+   
     ```bash
     docker build -t daxigua-server .
     ```
@@ -201,17 +303,17 @@ vercel --prod
     答：在输入 vercel 后，选择不和已有项目关联（link），并且使用一个新的项目名（project name）。
 
 8. 想在修改文件后重新搞个新版本，但输入 vercel prod 后，直接覆盖了，而没有让我选择是否和现有项目关联（link），怎么办？
-    
+   
     答：执行 vercel 后，会在本地生成 `.vercel` 隐藏目录保存之前的发布信息，删掉该目录即可。
 
 9. 导出网址后，我修改了图片，然后游戏中还是原来的图片？
-    
+   
     答：网址读取的是远程的文件，只改了本地当然没用！再次执行 vercel 或腾讯云命令，把最新文件传上去。
     
 10. Mac 能否使用这个教程呢？
     
     答：当然可以！所有命令和 windows 完全一致！只是 cmd 命令行工具改为用 terminal 终端（按 command + 空格，搜索 terminal）
- 
+
 11. 为什么打开网站白屏了？
     
     答：大概率是你修改错误，导致一些文件缺失。。可以试试重新下载代码，再修改，请先确保本地可以运行，再发布！

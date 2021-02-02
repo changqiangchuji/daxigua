@@ -84,10 +84,12 @@ const roundedCorners = (width: number, height: number) =>
   );
 
 if (commonImageFileList.length !== 11 || specialImageFileList.length !== 2) {
+  spinner.fail(chalk.red("请确保你在正确的目录下有 11张普通图片 以及 2张闪图"));
+  process.exit(0);
 }
 
 fs.mkdirSync(OUTPUT_IMAGE_PATH);
-spinner.succeed(chalk.green("输出目录创建成功"));
+spinner.succeed(chalk.green(" 输出目录创建成功"));
 
 const usePath = (
   folder: string,
@@ -100,7 +102,7 @@ const usePath = (
 };
 
 (async () => {
-  spinner.info(chalk.cyan("开始处理普通图片, 西内!"));
+  spinner.info(chalk.cyan(" 开始处理普通图片, 西内!"));
   for (const i in commonImageFileList) {
     const processingImage = commonImageFileList[i];
     const requiredOutputName = OUTPUT_COMMON_FOLDER_LIST[i];
@@ -132,18 +134,18 @@ const usePath = (
       .toFile(saveFilePath);
 
     spinner.succeed(
-      chalk.green(`图片 ${processingImage} 已保存至 ${saveFilePath}`)
+      chalk.green(` 图片 ${processingImage} 已保存至 ${saveFilePath}`)
     );
     console.log("");
   }
 
-  spinner.succeed(chalk.cyan("普通图片处理完毕"));
+  spinner.succeed(chalk.cyan(" 普通图片处理完毕"));
 
   console.log("===");
   console.log(chalk.bold(chalk.green("天赋创新牛逼")));
   console.log("===");
 
-  spinner.info(chalk.cyan("开始处理右上角闪图"));
+  spinner.info(chalk.cyan(" 开始处理右上角闪图"));
   for (const i in specialImageFileList) {
     const processingImage = specialImageFileList[i];
     const requiredOutputName = OUTPUT_SPECIAL_FOLDER_LIST[i];
@@ -167,17 +169,17 @@ const usePath = (
       .toFile(saveFilePath);
 
     spinner.succeed(
-      chalk.green(`图片 ${processingImage} 已保存至 ${saveFilePath}`)
+      chalk.green(` 图片 ${processingImage} 已保存至 ${saveFilePath}`)
     );
     console.log("");
   }
-  spinner.succeed(chalk.cyan("右上角闪图处理完毕"));
+  spinner.succeed(chalk.cyan(" 右上角闪图处理完毕"));
 
   console.log("===");
   console.log(chalk.bold(chalk.green("天赋创新牛逼")));
   console.log("===");
 
-  spinner.info(chalk.cyan("开始处理保留资源"));
+  spinner.info(chalk.cyan(" 开始处理保留资源"));
   for (const i in PRESERVED_ASSETS) {
     const processingImage = PRESERVED_ASSETS[i];
 
@@ -188,9 +190,9 @@ const usePath = (
     fs.copyFileSync(srcPath, saveFilePath);
 
     spinner.succeed(
-      chalk.green(`保留资源图片 ${srcPath} 已复制至 ${saveFilePath}`)
+      chalk.green(` 保留资源图片 ${srcPath} 已复制至 ${saveFilePath}`)
     );
     console.log("");
   }
-  spinner.succeed(chalk.cyan("保留资源处理完毕"));
+  spinner.succeed(chalk.cyan(" 保留资源处理完毕"));
 })();

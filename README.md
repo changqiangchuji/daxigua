@@ -17,6 +17,8 @@
 
 - 将你需要的图片放进指定目录下, 普通图片(即替换掉水果的)目录为`images/common`, 右上角闪图目录为`images/special`, `images/preserved`为保留资源, **请不要更改**, 同时确保普通图片数量为11张, 闪图数量为2张
 
+- 执行`npm install` 安装依赖
+
 - 执行`npm start`, 你应当能看到这样的输出
 
   ![image-20210202154037202](https://budu-oss-store.oss-cn-shenzhen.aliyuncs.com/image-20210202154037202.png)
